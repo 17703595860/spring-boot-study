@@ -17,7 +17,7 @@ public class TestController {
     @Autowired
     private TestService testService;
 
-    @GetMapping("/test")
+    @GetMapping("/test.do")
     @ResponseBody
     public String test() {
         return "success";
@@ -31,7 +31,7 @@ public class TestController {
 
     @GetMapping("/test3")
     public String test3() {
-        return "index";
+        return "test";
     }
 
 }
