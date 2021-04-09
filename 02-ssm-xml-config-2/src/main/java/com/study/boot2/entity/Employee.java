@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author HLH
@@ -27,5 +28,6 @@ public class Employee implements Serializable {
     private String email;
     private String gender;
     private Integer age;
+    private Date birthday;
 
 }

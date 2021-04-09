@@ -1,5 +1,6 @@
 package com.study.boot2.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.boot2.entity.Employee;
 import com.study.boot2.mapper.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;

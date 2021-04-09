@@ -11,12 +11,50 @@
         <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
     </context:component-scan>
 
-    <!-- 引入最新处理器映射器，静态资源html..放行 -->
-    <mvc:annotation-driven />
+    <!-- 引入最新处理器映射器 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="fastJsonConfig">
+                    <bean class="com.alibaba.fastjson.support.config.FastJsonConfig">
+                        <property name="charset" value="UTF-8" />
+                        <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss" />
+                        <property name="features">
+                            <array value-type="com.alibaba.fastjson.parser.Feature">
+                                <!-- 避免循环引用 -->
+                                <value>DisableCircularReferenceDetect</value>
+                            </array>
+                        </property>
+                    </bean>
+                </property>
+                <property name="defaultCharset" value="UTF-8" />
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 
-    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <!--静态资源html..放行-->
+    <!--<mvc:default-servlet-handler />-->
+    <mvc:resources mapping="/*" location="classpath:public/" />
+
+    <!-- 视图解析器 -->
+    <!--<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/" />
         <property name="suffix" value=".jsp" />
-    </bean>
+    </bean>-->
+    <!-- 代替试图解析器 -->
+    <mvc:view-resolvers>
+        <mvc:jsp prefix="/WEB-INF/" suffix=".jsp" />
+    </mvc:view-resolvers>
+    <!-- 直接配置充定向 -->
+    <mvc:redirect-view-controller path="/" redirect-url="/a.html" />
+    <!-- 直接配置controller-视图的映射 -->
+    <mvc:view-controller path="/aaa" view-name="aaa" />
+
 
 </beans>

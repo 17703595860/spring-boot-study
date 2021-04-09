@@ -19,16 +19,16 @@
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="datasource" />
     </bean>
-
     <!-- 声明式事务 -->
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 
-    <!-- mp -->
+    <!-- mp 基础配置 -->
     <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
         <!--<property name="mapperLocations" value="classpath:mapper/**/*.xml" />-->
         <property name="dataSource" ref="datasource" />
         <property name="typeAliasesPackage" value="com.study.boot2.entity" />
     </bean>
+    <!-- 包扫描 -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.study.boot2.mapper" />
     </bean>
