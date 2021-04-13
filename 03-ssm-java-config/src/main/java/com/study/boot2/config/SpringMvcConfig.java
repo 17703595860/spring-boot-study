@@ -8,12 +8,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -56,5 +62,34 @@ public class SpringMvcConfig extends WebMvcConfigurationSupport {
         converters.add(mappingJackson2HttpMessageConverter);
     }
 
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 配置静态资源映射
+        registry.addResourceHandler("/*").addResourceLocations(new ClassPathResource("/public/"));
+    }
 
+    @Override
+    protected void addViewControllers(ViewControllerRegistry registry) {
+        // 配置简单视图映射
+        registry.addViewController("/a").setViewName("aa");
+        // 直接设置地址重定向
+        registry.addRedirectViewController("/index", "/aaa.html");
+    }
+
+    @Override
+    protected void configureViewResolvers(ViewResolverRegistry registry) {
+        // jsp
+        registry.jsp("/WEB-INF/", ".jsp");
+        // internalResourceViewResolver
+        registry.viewResolver(new InternalResourceViewResolver("/WEB-INF/", ".jsp"));
+    }
+
+    @Override
+    protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+    }
+
+    /*@Override
+    protected void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }*/
 }

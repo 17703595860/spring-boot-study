@@ -25,6 +25,11 @@ public class EmployeeController {
     @Autowired
     private EmployeeMapper employeeMapper;
 
+    @GetMapping("/aa")
+    public String toAaJsp() {
+        return "aa";
+    }
+
     @GetMapping
     @ResponseBody
     public List<Employee> selectAll() {
